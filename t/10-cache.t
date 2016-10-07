@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 98;
+use Test::More tests => 90;
 use Test::Exception;
 use File::Temp qw/tempdir/;
 use File::Path qw/make_path remove_tree/;
@@ -43,7 +43,7 @@ make_path $in_path;
 cp 't/data/cache/xml/npg/run/12376.xml', $run_path;
 cp 't/data/cache/xml/npg/instrument/103.xml', $in_path;
 
-for my $type (qw/warehouse mlwarehouse/) {
+for my $type (qw/mlwarehouse/) {
   my $method = $type . '_driver_name';
   my $expected = $type eq 'mlwarehouse' ? 'ml_warehouse' : $type;
   is(npg_pipeline::cache->$method, $expected, "driver name for $type");
@@ -86,37 +86,6 @@ for my $type (qw/warehouse mlwarehouse/) {
   ok( $clims, 'lims objects returned');
   is( scalar @{$clims}, 2, 'two lims objects returned');
   is( $clims->[0]->driver_type, 'ml_warehouse', 'correct driver type');
-
-  my $oldwh_schema = t::dbic_util->new()->test_schema_wh('t/data/fixtures/wh');
-
-  $cache = npg_pipeline::cache->new(id_flowcell_lims => '3980331130775',
-                                    wh_schema        => $oldwh_schema,
-                                    id_run           => 12376,
-                                    lims_driver_type => 'warehouse',
-                                    cache_location   => $tempdir);
-  is( $cache->lims_driver_type(), 'warehouse', 'driver as set');
-  lives_ok { $clims = $cache->lims() } 'can retrieve lims objects';
-  ok( $clims, 'lims objects returned');
-  is( scalar @{$clims}, 1, 'one lims object returned');
-  is( $clims->[0]->driver_type, 'warehouse', 'correct driver type');
-
-  $cache = npg_pipeline::cache->new(id_flowcell_lims => '9870331130775',
-                                    wh_schema        => $oldwh_schema,
-                                    id_run           => 12376,
-                                    lims_driver_type => 'warehouse',
-                                    cache_location   => $tempdir);
-  throws_ok { $clims = $cache->lims() }
-    qr/EAN13 barcode checksum fail for code 9870331130775/,
-    'cannot retrieve lims objects';
-
-  $cache = npg_pipeline::cache->new(id_flowcell_lims => '5260271901788',
-                                    wh_schema        => $oldwh_schema,
-                                    id_run           => 12376,
-                                    lims_driver_type => 'warehouse',
-                                    cache_location   => $tempdir);
-  throws_ok { $clims = $cache->lims() }
-    qr/Single tube not found from barcode 271901/,
-    'cannot retrieve lims objects';
 }
 
 {
