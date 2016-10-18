@@ -18,7 +18,7 @@ env:
     - BATON_VERSION="0.16.4"
     - DISPOSABLE_IRODS_VERSION="1.1"
     - WTSI_NPG_GITHUB_URL=https://github.com/wtsi-npg
-    - WTSI_NPG_BUILD_BRANCH=master
+    - WTSI_NPG_BUILD_BRANCH=devel
     - SHELL=/bin/bash
 
   matrix:

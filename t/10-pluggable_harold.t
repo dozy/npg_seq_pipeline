@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 56;
+use Test::More tests => 58;
 use Test::Deep;
 use Test::Exception;
 use t::util;
@@ -174,14 +174,14 @@ $util->set_staging_analysis_area({with_latest_summary => 1});
       no_bsub => 1,
       repository => q{t/data/sequence},
       id_flowcell_lims => 2015,
-      spider           => 1,
+      spider           => 0,
     );
   } q{no croak on new creation};
   mkdir $qc->archive_path;
   mkdir $qc->qc_path;
   is (join( q[ ], $qc->positions), '4', 'positions array');
   is (join( q[ ], $qc->all_positions), '1 2 3 4 5 6 7 8', 'all positions array');
-#  lives_ok { $qc->main() } q{no croak running qc->main()};
+  lives_ok { $qc->main() } q{no croak running qc->main()};
 }
 
 1;
