@@ -26,7 +26,8 @@ my $current = getcwd();
 my $new = "$dir/1234_samplesheet.csv";
 copy 't/data/p4_stage1_analysis/1234_samplesheet.csv', $new;
 local $ENV{NPG_CACHED_SAMPLESHEET_FILE} = $new;
-local $ENV{NPG_WEBSERVICE_CACHE_DIR} = q[];
+#local $ENV{NPG_WEBSERVICE_CACHE_DIR} = q[];
+local $ENV{NPG_WEBSERVICE_CACHE_DIR} = $dir;
 
 #################################
 # mock references
