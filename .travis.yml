@@ -1,0 +1,34 @@
+sudo: required
+
+language: perl
+
+perl:
+  - "5.16"
+
+addons:
+  postgresql: "9.3"
+  apt:
+    packages:
+    - libgd2-xpm-dev
+
+env:
+  global:
+    - PGVERSION="9.3"
+    - JANSSON_VERSION="2.7"
+    - BATON_VERSION="0.16.4"
+    - DISPOSABLE_IRODS_VERSION="1.1"
+    - WTSI_NPG_GITHUB_URL=https://github.com/wtsi-npg
+    - WTSI_NPG_BUILD_BRANCH=devel
+    - SHELL=/bin/bash
+
+  matrix:
+    - IRODS_VERSION=3.3.1 IRODS_RIP_DIR=/usr/local/irods
+
+before_install:
+  - ./scripts/travis_before_install.sh
+
+install:
+  - ./scripts/travis_install.sh
+
+script:
+  - ./scripts/travis_script.sh
