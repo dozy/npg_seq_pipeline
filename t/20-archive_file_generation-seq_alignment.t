@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More tests => 11;
 use Test::Exception;
 use Test::Deep;
 use File::Temp qw/tempdir/;
@@ -51,9 +51,9 @@ subtest 'test 1' => sub {
   `touch $dir/references/Strongyloides_ratti/20100601/all/picard/rat.fa`;
   `mkdir -p $dir/references/Strongyloides_ratti/20100601/all/bwa0_6`;
   `touch $dir/references/Strongyloides_ratti/20100601/all/bwa0_6/rat.fa`;
-  `mkdir $ref_dir/bowtie2`;
-  `mkdir $ref_dir/picard`;
-  `mkdir $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/bowtie2`;
+  `mkdir -p $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
   `touch $ref_dir/fasta/mm_ref_NCBI37_1.fasta`;
   `touch $ref_dir/bowtie2/mm_ref_NCBI37_1.fasta`;
   `touch $ref_dir/picard/mm_ref_NCBI37_1.fasta`;
@@ -80,7 +80,7 @@ subtest 'test 1' => sub {
       runfolder_path    => $runfolder_path,
       recalibrated_path => $bc_path,
       timestamp         => q{2014},
-      verbose           => 1,
+      verbose           => 0,
       repository        => $dir,
       no_bsub           => 1,
       force_phix_split  => 0,
@@ -146,7 +146,7 @@ subtest 'test 1' => sub {
       runfolder_path    => $runfolder_path,
       recalibrated_path => $bc_path,
       timestamp         => q{2014},
-      verbose           => 1,
+      verbose           => 0,
       repository        => $dir,
       no_bsub           => 1,
       force_phix_split  => 1,
@@ -185,7 +185,7 @@ subtest 'test 1' => sub {
       runfolder_path    => $runfolder_path,
       recalibrated_path => $bc_path,
       timestamp         => q{2014},
-      verbose           => 1,
+      verbose           => 0,
       repository        => $dir,
       no_bsub           => 1,
       force_phix_split  => 1,
@@ -200,7 +200,7 @@ subtest 'test 1' => sub {
       runfolder_path    => $runfolder_path,
       recalibrated_path => $bc_path,
       timestamp         => q{2014},
-      verbose           => 1,
+      verbose           => 0,
       repository        => $dir,
       no_bsub           => 1,
       force_phix_split  => 1,
@@ -216,9 +216,9 @@ subtest 'test 2' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Homo_sapiens','1000Genomes_hs37d5','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bowtie2`;
-  `mkdir $ref_dir/picard`;
-  `mkdir $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/bowtie2`;
+  `mkdir -p $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
   `touch $ref_dir/fasta/hs37d5.fa`;
   `touch $ref_dir/bowtie2/hs37d5.fa`;
   `touch $ref_dir/picard/hs37d5.fa`;
@@ -230,7 +230,7 @@ subtest 'test 2' => sub {
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20140606-133530/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20140606-133530/metadata_cache_13066';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
   copy("t/data/rna_seq/13066_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
   my $transcriptome_dir = join q[/],$dir,'transcriptomes','Homo_sapiens','ensembl_75_transcriptome','1000Genomes_hs37d5';
   `mkdir -p $transcriptome_dir/gtf`;
@@ -319,15 +319,15 @@ subtest 'test 4' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Homo_sapiens','GRCh38_full_analysis_set_plus_decoy_hla','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bwa0_6`;
-  `mkdir $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/picard`;
 
   my $runfolder = q{150709_HX4_16839_A_H7MHWCCXX};
   my $runfolder_path = join q[/], $dir, $runfolder;
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150712-121006/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150712-121006/metadata_cache_16839';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
   copy("t/data/hiseqx/16839_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
   `touch $ref_dir/fasta/Homo_sapiens.GRCh38_full_analysis_set_plus_decoy_hla.fa`;
   `touch $ref_dir/picard/Homo_sapiens.GRCh38_full_analysis_set_plus_decoy_hla.fa.dict`;
@@ -386,15 +386,15 @@ subtest 'test 5' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Homo_sapiens','1000Genomes_hs37d5','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bwa0_6`;
-  `mkdir $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/picard`;
 
   my $runfolder = q{150707_HS38_16807_A_C7U2YANXX};
   my $runfolder_path = join q[/], $dir, $runfolder;
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150707-232614/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150707-232614/metadata_cache_16807';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
   copy("t/data/hiseq/16807_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
 
   local $ENV{'NPG_WEBSERVICE_CACHE_DIR'} = q[t/data/hiseq];
@@ -445,9 +445,9 @@ subtest 'test 6' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Homo_sapiens','1000Genomes_hs37d5','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bwa`;
-  `mkdir $ref_dir/bwa0_6`;
-  `mkdir $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa`;
+  `mkdir -p $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/picard`;
 
   my $bait_dir = join q[/],$dir,'baits','Human_all_exon_V5','1000Genomes_hs37d5';
   `mkdir -p $bait_dir`;
@@ -459,7 +459,7 @@ subtest 'test 6' => sub {
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20160712-154117/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20160712-154117/metadata_cache_20268';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
 
   copy("t/data/hiseq/20268_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!";
 
@@ -524,15 +524,15 @@ subtest 'test 7' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Plasmodium_falciparum','3D7_Oct11v3','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bwa0_6`;
-  `mkdir $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/picard`;
 
   my $runfolder = q{150710_MS2_16850_A_MS3014507-500V2};
   my $runfolder_path = join q[/], $dir, $runfolder;
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150712-022206/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150712-022206/metadata_cache_16850';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
   copy("t/data/miseq/16850_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
   `touch $ref_dir/fasta/Pf3D7_v3.fasta`;
   `touch $ref_dir/picard/Pf3D7_v3.fasta.dict`;
@@ -589,15 +589,15 @@ subtest 'test 8' => sub {
 
   my $ref_dir = join q[/],$dir,'references','Plasmodium_falciparum','3D7_Oct11v3','all';
   `mkdir -p $ref_dir/fasta`;
-  `mkdir $ref_dir/bwa0_6`;
-  `mkdir $ref_dir/picard`;
+  `mkdir -p $ref_dir/bwa0_6`;
+  `mkdir -p $ref_dir/picard`;
 
   my $runfolder = q{150701_HS36_16756_B_C711RANXX};
   my $runfolder_path = join q[/], $dir, $runfolder;
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150707-132329/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150707-132329/metadata_cache_16756';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
   copy("t/data/hiseq/16756_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
   # default human reference needed for alignment for unconsented human split
   my $default_source = join q[/],$dir,'references','Homo_sapiens','1000Genomes_hs37d5';
@@ -622,19 +622,19 @@ subtest 'test 8' => sub {
   my $qc_in  = qq{$bc_path/archive/lane1};
   my $qc_out = qq{$qc_in/qc};
   my $args = {};
-  $args->{10001} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#1 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#1 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#1.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#1 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#1.json && viv.pl -s -x -v 3 -o viv_16756_1#1.log run_16756_1#1.json } .
+  $args->{10001} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#1 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#1 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#1.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#1 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#1.json && viv.pl -s -x -v 3 -o viv_16756_1#1.log run_16756_1#1.json } .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --tag_index 1} .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset phix --tag_index 1} .
     qq{ &&  qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset human --tag_index 1} .
      q{ && qc --check alignment_filter_metrics --id_run 16756 --position 1 --qc_in $PWD --qc_out } .$qc_out.q{ --tag_index 1}.
      q{ '};
-  $args->{10002} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#2 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#2 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#2.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#2 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#2.json && viv.pl -s -x -v 3 -o viv_16756_1#2.log run_16756_1#2.json } .
+  $args->{10002} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#2 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#2 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#2.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#2 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#2.json && viv.pl -s -x -v 3 -o viv_16756_1#2.log run_16756_1#2.json } .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --tag_index 2} .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset phix --tag_index 2} .
     qq{ &&  qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset human --tag_index 2} .
      q{ && qc --check alignment_filter_metrics --id_run 16756 --position 1 --qc_in $PWD --qc_out } .$qc_out.q{ --tag_index 2}.
      q{ '};
-  $args->{10000} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#0 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#0 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#0.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#0 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#0.json && viv.pl -s -x -v 3 -o viv_16756_1#0.log run_16756_1#0.json } .
+  $args->{10000} = qq{bash -c ' mkdir -p $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#0 ; cd $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/tmp_\$LSB_JOBID/16756_1#0 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/lane1 -keys outdatadir -vals $dir/150701_HS36_16756_B_C711RANXX/Data/Intensities/BAM_basecalls_20150707-132329/no_cal/archive/lane1 -keys af_metrics -vals 16756_1#0.bam_alignment_filter_metrics.json -keys rpt -vals 16756_1#0 -keys reference_dict_hs -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/picard/hs37d5.fa.dict -keys hs_reference_genome_fasta -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/fasta/hs37d5.fa -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys hs_alignment_reference_genome -vals $dir/references/Homo_sapiens/1000Genomes_hs37d5/all/bwa0_6/hs37d5.fa -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -keys alignment_hs_method -vals bwa_aln \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_humansplit_notargetalign_template.json > run_16756_1#0.json && viv.pl -s -x -v 3 -o viv_16756_1#0.log run_16756_1#0.json } .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --tag_index 0} .
     qq{ && qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset phix --tag_index 0} .
     qq{ &&  qc --check bam_flagstats --id_run 16756 --position 1 --qc_in $qc_in --qc_out $qc_out --subset human --tag_index 0} .    
@@ -656,7 +656,7 @@ subtest 'test 9' => sub {
   my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150714-133929/no_cal';
   `mkdir -p $bc_path`;
   my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20150714-133929/metadata_cache_16866';
-  `mkdir $cache_dir`;
+  `mkdir -p $cache_dir`;
 
   copy("t/data/miseq/16866_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
   local $ENV{'NPG_WEBSERVICE_CACHE_DIR'} = q[t/data/miseq];
@@ -702,6 +702,49 @@ subtest 'test 9' => sub {
      'no error generating ms command arguments';
   cmp_deeply ($ms_gen->_job_args, $args,
     'correct command arguments for HiSeq lane 16866_1');
+};
+
+subtest 'test 10' => sub {
+  plan tests => 4;
+  ##MiSeq, run 20990_1 (no target alignment, no human split)
+
+  my $runfolder = q{161010_MS5_20990_A_MS4548606-300V2};
+  my $runfolder_path = join q[/], $dir, $runfolder;
+  my $bc_path = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20161011-102905/no_cal';
+  `mkdir -p $bc_path`;
+  my $cache_dir = join q[/], $runfolder_path, 'Data/Intensities/BAM_basecalls_20161011-102905/metadata_cache_20990';
+  `mkdir $cache_dir`;
+
+  copy("t/data/miseq/20990_RunInfo.xml","$runfolder_path/RunInfo.xml") or die "Copy failed: $!"; #to get information that it is paired end
+  local $ENV{'NPG_WEBSERVICE_CACHE_DIR'} = q[t/data/miseq];
+  local $ENV{NPG_CACHED_SAMPLESHEET_FILE} = q[t/data/miseq/samplesheet_20990.csv];
+
+  my $ms_gen;
+  lives_ok {
+    $ms_gen = npg_pipeline::archive::file::generation::seq_alignment->new(
+      run_folder        => $runfolder,
+      runfolder_path    => $runfolder_path,
+      recalibrated_path => $bc_path,
+      timestamp         => q{2016},
+      repository        => $dir,
+      no_bsub           => 1,
+    )
+  } 'no error creating an object';
+  is ($ms_gen->id_run, 20990, 'id_run (20990) inferred correctly');
+
+  my $qc_in  = qq{$bc_path/archive/lane1};
+  my $qc_out = qq{$qc_in/qc};
+  my $args = {};
+
+  $args->{10001} = qq{bash -c ' mkdir -p $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#1 ; cd $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#1 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/lane1 -keys outdatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 -keys af_metrics -vals 20990_1#1.bam_alignment_filter_metrics.json -keys rpt -vals 20990_1#1 -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_template.json > run_20990_1#1.json && viv.pl -s -x -v 3 -o viv_20990_1#1.log run_20990_1#1.json  && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 1 && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --subset phix --tag_index 1 &&   qc --check alignment_filter_metrics --id_run 20990 --position 1 --qc_in \$PWD --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 1 '};
+  $args->{10000} = qq{bash -c ' mkdir -p $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#0 ; cd $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#0 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/lane1 -keys outdatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 -keys af_metrics -vals 20990_1#0.bam_alignment_filter_metrics.json -keys rpt -vals 20990_1#0 -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_template.json > run_20990_1#0.json && viv.pl -s -x -v 3 -o viv_20990_1#0.log run_20990_1#0.json  && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 0 && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --subset phix --tag_index 0 &&   qc --check alignment_filter_metrics --id_run 20990 --position 1 --qc_in \$PWD --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 0 '};
+  $args->{10002} = qq{bash -c ' mkdir -p $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#2 ; cd $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/tmp_\$LSB_JOBID/20990_1#2 && vtfp.pl -keys samtools_executable -vals samtools1 -keys cfgdatadir -vals \$(dirname \$(readlink -f \$(which vtfp.pl)))/../data/vtlib/ -keys aligner_numthreads -vals `npg_pipeline_job_env_to_threads` -keys br_numthreads_val -vals `npg_pipeline_job_env_to_threads --exclude 1 --divide 2` -keys b2c_mt_val -vals `npg_pipeline_job_env_to_threads --exclude 2 --divide 2` -keys indatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/lane1 -keys outdatadir -vals $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 -keys af_metrics -vals 20990_1#2.bam_alignment_filter_metrics.json -keys rpt -vals 20990_1#2 -keys phix_reference_genome_fasta -vals $dir/references/PhiX/Illumina/all/fasta/phix-illumina.fa -keys alignment_filter_jar -vals $odir/t/bin/software/solexa/bin/aligners/illumina2bam/Illumina2bam-tools-1.00/AlignmentFilter.jar -prune_nodes '"'"'fop.*samtools_stats_F0.*00_bait.*'"'"' -keys bwa_executable -vals bwa0_6 -keys alignment_method -vals bwa_mem -splice_nodes '"'"'src_bam:-alignment_filter:__PHIX_BAM_IN__'"'"' -keys scramble_reference_flag -vals '"'"'-x'"'"' -nullkeys stats_reference_flag -nullkeys af_target_in_flag -keys af_target_out_flag_name -vals '"'"'UNALIGNED'"'"' \$(dirname \$(dirname \$(readlink -f \$(which vtfp.pl))))/data/vtlib/alignment_wtsi_stage2_template.json > run_20990_1#2.json && viv.pl -s -x -v 3 -o viv_20990_1#2.log run_20990_1#2.json  && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 2 && qc --check bam_flagstats --id_run 20990 --position 1 --qc_in $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1 --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --subset phix --tag_index 2 &&   qc --check alignment_filter_metrics --id_run 20990 --position 1 --qc_in \$PWD --qc_out $dir/161010_MS5_20990_A_MS4548606-300V2/Data/Intensities/BAM_basecalls_20161011-102905/no_cal/archive/lane1/qc --tag_index 2 '};
+
+  lives_ok {$ms_gen->_generate_command_arguments([1])}
+     'no error generating ms command arguments';
+
+  cmp_deeply ($ms_gen->_job_args, $args,
+    'correct command arguments for MiSeq lane 20990_1');
 };
 
 1;
