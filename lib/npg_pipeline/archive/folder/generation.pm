@@ -56,6 +56,23 @@ sub create_dir {
   }
 
   #############
+  # check existence of run-level .npg_cache_dir
+  # create if it doesn't
+
+  my $npg_cache_dir = $archive_dir . q{/.npg_cache_10000};
+
+  if ( ! -d $npg_cache_dir) {
+    my $mk_npg_cache_dir_cmd = qq{mkdir -p $npg_cache_dir};
+    $self->info($mk_npg_cache_dir_cmd);
+    my $return = qx{$mk_npg_cache_dir_cmd};
+    if ( $CHILD_ERROR ) {
+    croak $npg_cache_dir . qq{ does not exist and unable to create: $CHILD_ERROR\n$return};
+    }
+  } else {
+    $self->info("$npg_cache_dir already exists");
+  }
+
+  #############
   # check existence of multiplex lane and qc directory
   # create if they doesn't
   if( $self->is_indexed() ){
@@ -82,6 +99,17 @@ sub create_dir {
               my $return = qx{$mk_lane_qc_dir_cmd};
               if ( $CHILD_ERROR ) {
                     croak $lane_qc_dir . qq{ does not exist and unable to create: $CHILD_ERROR\n$return};
+              }
+          }
+
+          my $lane_npg_cache_dir = $lane_dir . q{/.npg_cache_10000};
+
+          if( ! -d $lane_npg_cache_dir ){
+              my $mk_lane_npg_cache_dir_cmd = qq{mkdir -p $lane_npg_cache_dir};
+              $self->info($mk_lane_npg_cache_dir_cmd);
+              my $return = qx{$mk_lane_npg_cache_dir_cmd};
+              if ( $CHILD_ERROR ) {
+                    croak $lane_npg_cache_dir . qq{ does not exist and unable to create: $CHILD_ERROR\n$return};
               }
           }
       }
