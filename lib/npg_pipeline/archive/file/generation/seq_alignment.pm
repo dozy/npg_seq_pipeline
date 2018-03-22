@@ -111,6 +111,21 @@ has '_ref_cache' => (isa      => 'HashRef',
                      default  => sub {return {};},
                     );
 
+has 'tag_metrics_files' => (
+                         isa     => 'HashRef',
+                         is      => 'ro',
+                         lazy_build => 1,
+                       );
+sub _build_tag_metrics_files {
+  my $self = shift;
+  my $h;
+
+  for my $lane ($self->positions) {
+    $h->{$lane} = sprintf q[%s/%d_%d.tag_metrics.json], $self->qc_path, $self->id_run, $lane;
+  }
+  return $h;
+}
+
 sub _create_lane_dirs {
   my ($self, @positions) = @_;
 
@@ -228,6 +243,7 @@ sub _lsf_alignment_command { ## no critic (Subroutines::ProhibitExcessComplexity
   my $spike_tag;
   my $input_path= $self->input_path;
   my $archive_path= $self->archive_path;
+  my $recal_path= $self->recalibrated_path;
   my $qcpath= $self->qc_path;
   if($is_plex) {
     $tag_index = $l->tag_index;
@@ -255,10 +271,14 @@ sub _lsf_alignment_command { ## no critic (Subroutines::ProhibitExcessComplexity
     samtools_executable => q{samtools1},
     indatadir           => $input_path,
     outdatadir          => $archive_path,
+    recal_dir            => $recal_path,
     af_metrics          => $name_root.q{.bam_alignment_filter_metrics.json},
     rpt                 => $name_root,
     phix_reference_genome_fasta => $self->phix_reference,
-    alignment_filter_jar => $self->_AlignmentFilter_jar,
+    s2_id_run => $id_run,
+    s2_position => $position,
+    s2_tag_index => $tag_index,
+    tag_metrics_file => $self->tag_metrics_files->{$position},
   };
   my $p4_ops = {
     prune => [],
