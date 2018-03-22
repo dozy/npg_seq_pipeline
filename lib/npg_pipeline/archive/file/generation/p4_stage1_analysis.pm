@@ -23,6 +23,11 @@ Readonly::Scalar my $MEMORY                       => q{12000}; # memory in megab
 Readonly::Scalar my $FS_RESOURCE                  => 4; # LSF resource counter to control access to staging area file system
 Readonly::Scalar my $DEFAULT_I2B_THREAD_COUNT     => 3; # value passed to bambi i2b --threads flag
 
+Readonly::Scalar my $TILE_METRICS_INTEROP_CODES => {'cluster density'    => 100,
+                                                     'cluster density pf' => 101,
+                                                     'cluster count'      => 102,
+                                                     'cluster count pf'   => 103,
+                                                     };
 sub generate {
   my ( $self, $arg_refs ) = @_;
 
@@ -170,6 +175,29 @@ has '_param_vals'   => (
                        is      => 'ro',
                        default => sub { return {};},
                      );
+
+has 'interop_file_name'  => (
+                           isa        => 'Str',
+                           is         => 'ro',
+                           lazy_build => 1,
+                         );
+sub _build_interop_file_name {
+  my $self = shift;
+
+  return $self->runfolder_path . q{/InterOp/TileMetricsOut.bin};
+}
+
+has 'cluster_counts'   => (
+                       isa     => 'HashRef',
+                       is      => 'ro',
+                       lazy_build => 1,
+                     );
+
+sub _build_cluster_counts {
+  my $self = shift;
+
+  return $self->_parsing_interop($self->interop_file_name);
+}
 
 sub _create_p4_stage1_dirs {
   my ($self) = @_;
@@ -435,6 +463,11 @@ sub _generate_command_params {
     $p4_params{phix_alignment_method} = q[bwa_aln_se];
   }
 
+  # cluster count (used to calculate FRAC for bam subsampling)
+  my $cluster_count = $self->cluster_counts->{$position}->{'cluster count'};
+  $p4_params{cluster_count} = $cluster_count;
+  $p4_params{seed_frac} = sprintf q[%f], (10000.0 / $cluster_count) + $id_run;
+
   my $name_root = $id_run . q{_} . $position;
   # allow specification of thread number for some processes in config file. Note: these threads are being drawn from the same pool. Unless
   #  they appear in the config file, their values will be derived from what LSF assigns the job based on the -n value supplied to the bsub
@@ -457,6 +490,7 @@ sub _generate_command_params {
                            q(cd), $self->p4_stage1_errlog_paths->{$position}, q{&&},
                            q(vtfp.pl),
                            $splice_flag, $prune_flag,
+                           q{-template_path $}.q{(dirname $}.q{(readlink -f $}.q{(which vtfp.pl)))/../data/vtlib},
                            qq(-o run_$name_root.json),
                            q(-param_vals), (join q{/}, $self->p4_stage1_params_paths->{$position}, $name_root.q{_p4s1_pv_in.json}),
                            q(-export_param_vals), $name_root.q{_p4s1_pv_out_$}.q/{LSB_JOBID}.json/,
@@ -469,8 +503,6 @@ sub _generate_command_params {
                            q{$}.q{(dirname $}.q{(dirname $}.q{(readlink -f $}.q{(which vtfp.pl))))/data/vtlib/bcl2bam_phix_deplex_wtsi_stage1_template.json},
                            q{&&},
                            qq(viv.pl -s -x -v 3 -o viv_$name_root.log run_$name_root.json),
-                           q{&&},
-                           qq{qc --check spatial_filter --id_run $id_run --position $position --qc_out $qc_path < $spatial_filter_stats_file},
                            q(');
 
   $self->_job_args->{_param_vals}->{$position}->{assign} = [ \%p4_params ];
@@ -571,6 +603,60 @@ sub _build__extra_tradis_transposon_read {
   return 0;
 }
 
+sub _parsing_interop {
+  my ($self, $interop) = @_;
+
+  my $cluster_count_by_lane = {};
+
+  my $version;
+  my $length;
+  my $data;
+
+  my $template = 'v3f'; # three two-byte integers and one 4-byte float
+
+  open my $fh, q{<}, $interop or
+    $self->logcroak(qq{Couldn't open interop file $interop, error $ERRNO});
+  binmode $fh, ':raw';
+
+  $fh->read($data, 1) or
+    $self->logcroak(qq{Couldn't read file version in interop file $interop, error $ERRNO});
+  $version = unpack 'C', $data;
+
+  $fh->read($data, 1) or
+    $self->logcroak(qq{Couldn't read record length in interop file $interop, error $ERRNO});
+  $length = unpack 'C', $data;
+
+  my $tile_metrics = {};
+
+  while ($fh->read($data, $length)) {
+    my ($lane,$tile,$code,$value) = unpack $template, $data;
+    if( $code == $TILE_METRICS_INTEROP_CODES->{'cluster count'} ){
+      push @{$tile_metrics->{$lane}->{'cluster count'}}, $value;
+    }elsif( $code == $TILE_METRICS_INTEROP_CODES->{'cluster count pf'} ){
+      push @{$tile_metrics->{$lane}->{'cluster count pf'}}, $value;
+    }
+  }
+
+  $fh->close() or
+    $self->logcroak(qq{Couldn't close interop file $interop, error $ERRNO});
+
+  my $lanes = scalar keys %{$tile_metrics};
+  if( $lanes == 0){
+    $self->warn('No cluster count data');
+    return $cluster_count_by_lane;
+  }
+
+  # calc lane totals
+  foreach my $lane (keys %{$tile_metrics}) {
+    for my $code (keys %{$tile_metrics->{$lane}}) {
+      my $total = 0;
+      for ( @{$tile_metrics->{$lane}->{$code}} ){ $total += $_};
+      $cluster_count_by_lane->{$lane}->{$code} = $total;
+    }
+  }
+
+  return $cluster_count_by_lane;
+}
 
 no Moose;
 
