@@ -1,6 +1,5 @@
 ---
 - create_archive_directory
-- create_empty_fastq
 - create_summary_link_analysis
 - run_analysis_in_progress
 - lane_analysis_in_progress
@@ -9,7 +8,6 @@
 - update_warehouse
 - update_ml_warehouse
 - run_secondary_analysis_in_progress
-- bam2fastqcheck_and_cached_fastq
 - qc_qX_yield
 - qc_adapter
 - qc_insert_size
