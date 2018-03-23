@@ -22,6 +22,7 @@ Readonly::Scalar my $NUM_SLOTS                    => q(8,16);
 Readonly::Scalar my $MEMORY                       => q{12000}; # memory in megabytes
 Readonly::Scalar my $FS_RESOURCE                  => 4; # LSF resource counter to control access to staging area file system
 Readonly::Scalar my $DEFAULT_I2B_THREAD_COUNT     => 3; # value passed to bambi i2b --threads flag
+Readonly::Scalar my $DEFAULT_SPLIT_THREADS_COUNT  => 0; # value passed to samtools split --threads flag
 
 Readonly::Scalar my $TILE_METRICS_INTEROP_CODES => {'cluster density'    => 100,
                                                      'cluster density pf' => 101,
@@ -466,7 +467,9 @@ sub _generate_command_params {
   # cluster count (used to calculate FRAC for bam subsampling)
   my $cluster_count = $self->cluster_counts->{$position}->{'cluster count'};
   $p4_params{cluster_count} = $cluster_count;
-  $p4_params{seed_frac} = sprintf q[%f], (10000.0 / $cluster_count) + $id_run;
+  $p4_params{seed_frac} = sprintf q[%.8f], (10000.0 / $cluster_count) + $id_run;
+
+  $p4_params{split_threads_val} = $self->general_values_conf()->{'p4_stage1_split_threads_count'} || $DEFAULT_SPLIT_THREADS_COUNT;
 
   my $name_root = $id_run . q{_} . $position;
   # allow specification of thread number for some processes in config file. Note: these threads are being drawn from the same pool. Unless
