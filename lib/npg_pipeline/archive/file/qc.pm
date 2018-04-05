@@ -149,14 +149,14 @@ sub _qc_command {
   if (defined $indexed) {
     my $lane_archive_path = File::Spec->catfile($archive_path, q[lane] . $lanestr);
     $qc_in = ( $self->qc_to_run() eq q[adapter]) ?
-        File::Spec->catfile($recalibrated_path, q[lane] . $lanestr) : $lane_archive_path;
+        File::Spec->catfile($recalibrated_path, q[lane] . $lanestr) : $lane_archive_path . q[/.npg_cache_10000];
     $qc_out = File::Spec->catfile($lane_archive_path, q[qc]);
     $c .= q{ --position=}  . $lanestr;
     $c .= q{ --tag_index=} . $tagstr;
   } else {
     $c .= q{ --position=}  . $self->lsb_jobindex();
     $qc_in  = $self->qc_to_run() eq q{tag_metrics} ? $self->bam_basecall_path :
-        (($self->qc_to_run() eq q[adapter]) ? $recalibrated_path : $archive_path);
+        (($self->qc_to_run() eq q[adapter]) ? $recalibrated_path : $archive_path . q[/.npg_cache_10000]);
     $qc_out = $self->qc_path();
   }
   $c .= qq{ --qc_in=$qc_in --qc_out=$qc_out};
