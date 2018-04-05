@@ -3,7 +3,6 @@
 - create_summary_link_analysis
 - run_analysis_in_progress
 - lane_analysis_in_progress
-- illumina_basecall_stats
 - p4_stage1_analysis
 - update_warehouse
 - update_ml_warehouse
@@ -18,7 +17,6 @@
 - update_ml_warehouse
 - bam_cluster_counter_check
 - seqchksum_comparator
-- qc_gc_bias
 - qc_pulldown_metrics
 - qc_genotype
 - qc_verify_bam_id
