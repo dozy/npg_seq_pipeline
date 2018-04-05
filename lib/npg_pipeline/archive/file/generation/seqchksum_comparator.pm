@@ -122,7 +122,7 @@ sub _compare_lane {
   my $cram_file_name_glob = qq({lane$position/,}). $self->id_run . '_' . $position . q{*.cram};
   my @crams = glob $cram_file_name_glob or
     $self->logcroak("Cannot find any cram files using $cram_file_name_glob");
-  my @seqchksums = map{s/\.cram$/\.seqcksum/} @crams;
+  my @seqchksums = map{s/\.cram$/\.seqchksum/r} @crams;
   $self->info("Building .all.seqchksum for lane $position from seqchksum set based on $cram_file_name_glob ...");
 
   my $cmd = 'seqchksum_merge.pl ' . join(q{ }, @seqchksums) . qq{> $lane_seqchksum_file_name};
