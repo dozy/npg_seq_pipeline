@@ -5,13 +5,13 @@ b:
     seq_alignment: 1
     qc_contamination: 1
     qc_adapter: 1
+    qc_upstream_tags: 1
 c:
     bam_cluster_counter_check: 1
     seqchksum_comparator: 1
     qc_gc_bias: 1
     qc_pulldown_metrics: 1
     qc_genotype: 1
-    qc_upstream_tags: 1
     qc_verify_bam_id: 1
     qc_gc_fraction: 1
     qc_insert_size: 1
