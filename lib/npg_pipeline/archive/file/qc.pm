@@ -131,11 +131,13 @@ sub _generate_bsub_command {
 sub _qc_command {
   my ($self, $indexed) = @_;
 
+  my $qc = $self->qc_to_run();
+
   my $c = $QC_SCRIPT_NAME;
-  $c .= q{ --check=} . $self->qc_to_run();
+  $c .= q{ --check=} . $qc;
   $c .= q{ --id_run=} . $self->id_run();
 
-  if ( $self->qc_to_run() eq q[adapter] ) {
+  if ( $qc eq q[adapter] ) {
     $c .= q{ --file_type=bam};
   }
 
@@ -148,15 +150,24 @@ sub _qc_command {
 
   if (defined $indexed) {
     my $lane_archive_path = File::Spec->catfile($archive_path, q[lane] . $lanestr);
-    $qc_in = ( $self->qc_to_run() eq q[adapter]) ?
-        File::Spec->catfile($recalibrated_path, q[lane] . $lanestr) : $lane_archive_path . q[/.npg_cache_10000];
+    $qc_in = ( $qc eq q[adapter]) ?
+        File::Spec->catfile($recalibrated_path, q[lane] . $lanestr) :
+        $lane_archive_path;
+    if ($qc =~ /^insert_size|sequence_error|ref_match$/smx) {
+      $qc_in .= q[/.npg_cache_10000];
+    }
+
     $qc_out = File::Spec->catfile($lane_archive_path, q[qc]);
     $c .= q{ --position=}  . $lanestr;
     $c .= q{ --tag_index=} . $tagstr;
   } else {
     $c .= q{ --position=}  . $self->lsb_jobindex();
-    $qc_in  = $self->qc_to_run() eq q{tag_metrics} ? $self->bam_basecall_path :
-        (($self->qc_to_run() eq q[adapter]) ? $recalibrated_path : $archive_path . q[/.npg_cache_10000]);
+    $qc_in  = $qc eq q{tag_metrics} ?
+         $self->bam_basecall_path :
+        (($qc eq q[adapter]) ? $recalibrated_path : $archive_path);
+    if ($qc =~ /^insert_size|sequence_error|ref_match$/smx) {
+      $qc_in .= q[/.npg_cache_10000];
+    }
     $qc_out = $self->qc_path();
   }
   $c .= qq{ --qc_in=$qc_in --qc_out=$qc_out};
