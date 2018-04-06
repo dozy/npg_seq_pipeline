@@ -465,7 +465,7 @@ sub _generate_command_params {
   }
 
   # cluster count (used to calculate FRAC for bam subsampling)
-  my $cluster_count = $self->cluster_counts->{$position}->{'cluster count'};
+  my $cluster_count = $self->cluster_counts->{$position}->{'cluster count pf'};
   $p4_params{cluster_count} = $cluster_count;
   $p4_params{seed_frac} = sprintf q[%.8f], (10000.0 / $cluster_count) + $id_run;
 
