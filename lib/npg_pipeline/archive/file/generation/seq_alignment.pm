@@ -371,7 +371,7 @@ sub _lsf_alignment_command { ## no critic (Subroutines::ProhibitExcessComplexity
   }
   else {
     push @{$p4_ops->{prune}}, 'foptgt.*samtools_stats_F0.*00_bait.*-';  # confirm hyphen
-    push @{$p4_ops->{splice}}, 'ssfqc_tee_ssfqc:straight_through1-foptgt_bamsort_coord:', 'foptgt_seqchksum_tee:final-scs_cmp_seqchksum:outputchk';
+    push @{$p4_ops->{splice}}, 'ssfqc_tee_ssfqc:straight_through1-foptgt_bamsort_coord:', 'foptgt_seqchksum_file:-scs_cmp_seqchksum:outputchk';
   }
 
   if($do_rna) {
