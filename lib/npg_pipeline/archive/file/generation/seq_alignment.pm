@@ -289,6 +289,11 @@ sub _lsf_alignment_command { ## no critic (Subroutines::ProhibitExcessComplexity
     push @{$p4_ops->{prune}}, 'fop.*_bmd_multiway:calibration_pu-';
   }
 
+  if(not $is_plex) {
+    push @{$p4_ops->{prune}}, 'ssfqc_tee_ssfqc:subsample-';
+    push @{$p4_ops->{prune}}, 'ssfqc_tee_ssfqc:fqc-';
+  }
+
   my $do_rna = $self->_do_rna_analysis($l);
 
   my $hs_bwa = ($self->is_paired_read ? 'bwa_aln' : 'bwa_aln_se');
