@@ -452,13 +452,14 @@ sub _generate_command_params {
       $p4_params{$bid_flag_map{q/MAX_NO_CALLS/}} = $self->general_values_conf()->{single_plex_decode_max_no_calls};
       $p4_params{bid_convert_low_quality_to_no_call_flag} = q[--convert-low-quality];
     }
+    $prune_flag = q[-prune_nodes '"'"'tee_split:unsplit_bam-'"'"'];
   }
   else {
     $self->info(q{P4 stage1 analysis on non-plexed lane});
 
     # This will avoid using BamIndexDecoder or attempting to split a non-muliplexed lane.
     $splice_flag = q[-splice_nodes '"'"'bamadapterfind:-bamcollate:'"'"'];
-    $prune_flag = q[-prune_nodes '"'"'fs1p_tee_split:__SPLIT_BAM_OUT__-'"'"'];
+    $prune_flag = q[-prune_nodes '"'"'tee_split:split_bam-'"'"'];
   }
 
   if(!$self->is_paired_read) {
