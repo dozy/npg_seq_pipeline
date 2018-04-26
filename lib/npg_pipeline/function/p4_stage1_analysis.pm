@@ -387,10 +387,10 @@ sub _generate_command_params {
   # allow specification of thread number for some processes in config file. Note: these threads are being drawn from the same pool. Unless
   #  they appear in the config file, their values will be derived from what LSF assigns the job based on the -n value supplied to the bsub
   #  command (see $num_slots in _default_resources()).
-  my $aligner_slots = $self->general_values_conf()->{'p4_stage1_aligner_slots'} || q[`npg_pipeline_job_env_to_threads --exclude -2 --divide 3`];
-  my $samtobam_slots = $self->general_values_conf()->{'p4_stage1_samtobam_slots'} || q[`npg_pipeline_job_env_to_threads --exclude -1 --divide 3`];
-  my $bamsormadup_slots = $self->general_values_conf()->{'p4_stage1_bamsort_slots'} || q[`npg_pipeline_job_env_to_threads --divide 3`];
-  my $bamrecompress_slots = $self->general_values_conf()->{'p4_stage1_bamrecompress_slots'} || q[`npg_pipeline_job_env_to_threads`];
+  my $aligner_slots = $self->general_values_conf()->{'p4_stage1_aligner_slots'} || $self->logcroak('Not defined');
+  my $samtobam_slots = $self->general_values_conf()->{'p4_stage1_samtobam_slots'} || $self->logcroak('Not defined');
+  my $bamsormadup_slots = $self->general_values_conf()->{'p4_stage1_bamsort_slots'} || $self->logcroak('Not defined');
+  my $bamrecompress_slots = $self->general_values_conf()->{'p4_stage1_bamrecompress_slots'} || $self->logcroak('Not defined');
 
   my $i2b_implementation_flag = q[];
   if(my $val = $self->general_values_conf()->{'p4_stage1_i2b_implementation'}) {
