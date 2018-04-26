@@ -69,9 +69,8 @@ sub generate {
 
 foreach my $jar_name (qw/Illumina2bam BamAdapterFinder BamIndexDecoder/) {
   has q{_}.$jar_name.q{_jar} => (
-                           isa        => q{NpgCommonResolvedPathJarFile},
+                           isa        => q{Str},
                            is         => q{ro},
-                           coerce     => 1,
                            default    => $jar_name.q{.jar},
                          );
 }

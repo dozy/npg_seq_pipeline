@@ -61,16 +61,14 @@ sub _build_phix_reference {
 }
 
 has q{_AlignmentFilter_jar} => (
-                           isa        => q{NpgCommonResolvedPathJarFile},
+                           isa        => q{Str},
                            is         => q{ro},
-                           coerce     => 1,
                            default    => q{AlignmentFilter.jar},
                                 );
 
 has q{_SplitBamByChromosomes_jar} => (
-                           isa        => q{NpgCommonResolvedPathJarFile},
+                           isa        => q{Str},
                            is         => q{ro},
-                           coerce     => 1,
                            default    => q{SplitBamByChromosomes.jar},
                                 );
 
