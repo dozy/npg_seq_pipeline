@@ -15,8 +15,9 @@ GetOptions(
   'maximum=i'       => \$maximum,
   'divide_by=i'     => \$divide_by
 ) or die "Problem with command line arguments\n";
-
+## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
 my $n = 12;
+## use critic
 if ( (!$n) && (my $mcpu_hosts = $ENV{'LSB_MCPU_HOSTS'})) {
   ($n) = $mcpu_hosts =~ /(\d+)\s*\Z/smx;
 }
