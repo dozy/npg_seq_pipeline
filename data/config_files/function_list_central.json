@@ -39,11 +39,6 @@
          {
             "relation" : "dependsOn",
             "source" : "run_analysis_in_progress",
-            "target" : "illumina_basecall_stats"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "run_analysis_in_progress",
             "target" : "update_warehouse"
          },
          {
@@ -73,48 +68,8 @@
          },
          {
             "relation" : "dependsOn",
-            "source" : "illumina_basecall_stats",
-            "target" : "pipeline_end"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "p4_stage1_analysis",
-            "target" : "bam2fastqcheck_and_cached_fastq"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
-            "target" : "qc_qX_yield"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
+            "source" : "run_secondary_analysis_in_progress",
             "target" : "qc_adapter"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
-            "target" : "qc_insert_size"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
-            "target" : "qc_sequence_error"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
-            "target" : "qc_gc_fraction"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "bam2fastqcheck_and_cached_fastq",
-            "target" : "qc_ref_match"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_qX_yield",
-            "target" : "update_ml_warehouse_2"
          },
          {
             "relation" : "dependsOn",
@@ -123,28 +78,8 @@
          },
          {
             "relation" : "dependsOn",
-            "source" : "qc_insert_size",
-            "target" : "update_ml_warehouse_2"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_sequence_error",
-            "target" : "update_ml_warehouse_2"
-         },
-         {
-            "relation" : "dependsOn",
             "source" : "update_ml_warehouse_2",
             "target" : "pipeline_end"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_gc_fraction",
-            "target" : "update_ml_warehouse_2"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_ref_match",
-            "target" : "update_ml_warehouse_2"
          },
          {
             "relation" : "dependsOn",
@@ -169,46 +104,11 @@
          {
             "relation" : "dependsOn",
             "source" : "seq_alignment",
-            "target" : "qc_genotype"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "seq_alignment",
             "target" : "qc_verify_bam_id"
          },
          {
             "relation" : "dependsOn",
-            "source" : "seq_alignment",
-            "target" : "qc_upstream_tags"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_qX_yield",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
             "source" : "qc_adapter",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_insert_size",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_sequence_error",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_gc_fraction",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_ref_match",
             "target" : "run_analysis_complete"
          },
          {
@@ -228,17 +128,7 @@
          },
          {
             "relation" : "dependsOn",
-            "source" : "qc_genotype",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
             "source" : "qc_verify_bam_id",
-            "target" : "run_analysis_complete"
-         },
-         {
-            "relation" : "dependsOn",
-            "source" : "qc_upstream_tags",
             "target" : "run_analysis_complete"
          },
          {
@@ -298,10 +188,6 @@
             "label" : "lane_analysis_in_progress"
          },
          {
-            "id" : "illumina_basecall_stats",
-            "label" : "illumina_basecall_stats"
-         },
-         {
             "id" : "p4_stage1_analysis",
             "label" : "p4_stage1_analysis"
          },
@@ -318,32 +204,8 @@
             "label" : "run_secondary_analysis_in_progress"
          },
          {
-            "id" : "bam2fastqcheck_and_cached_fastq",
-            "label" : "bam2fastqcheck_and_cached_fastq"
-         },
-         {
-            "id" : "qc_qX_yield",
-            "label" : "qc_qX_yield"
-         },
-         {
             "id" : "qc_adapter",
             "label" : "qc_adapter"
-         },
-         {
-            "id" : "qc_insert_size",
-            "label" : "qc_insert_size"
-         },
-         {
-            "id" : "qc_sequence_error",
-            "label" : "qc_sequence_error"
-         },
-         {
-            "id" : "qc_gc_fraction",
-            "label" : "qc_gc_fraction"
-         },
-         {
-            "id" : "qc_ref_match",
-            "label" : "qc_ref_match"
          },
          {
             "id" : "seq_alignment",
@@ -366,16 +228,8 @@
             "label" : "qc_pulldown_metrics"
          },
          {
-            "id" : "qc_genotype",
-            "label" : "qc_genotype"
-         },
-         {
             "id" : "qc_verify_bam_id",
             "label" : "qc_verify_bam_id"
-         },
-         {
-            "id" : "qc_upstream_tags",
-            "label" : "qc_upstream_tags"
          },
          {
             "id" : "run_analysis_complete",
