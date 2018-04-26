@@ -16,10 +16,7 @@ GetOptions(
   'divide_by=i'     => \$divide_by
 ) or die "Problem with command line arguments\n";
 
-my $n = 0;
-if( my $bindvar = $ENV{'LSB_BIND_CPU_LIST'} ) {
-  $n = scalar(() = $bindvar=~/\d+/smxg);
-}
+my $n = 12;
 if ( (!$n) && (my $mcpu_hosts = $ENV{'LSB_MCPU_HOSTS'})) {
   ($n) = $mcpu_hosts =~ /(\d+)\s*\Z/smx;
 }
