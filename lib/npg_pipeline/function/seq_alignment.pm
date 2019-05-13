@@ -38,6 +38,9 @@ Readonly::Scalar my $REFERENCE_ARRAY_TVERSION_IDX => q{2};
 Readonly::Scalar my $DEFAULT_RNA_ANALYSIS         => q{tophat2};
 Readonly::Array  my @RNA_ANALYSES                 => qw{tophat2 star hisat2};
 #Readonly::Scalar my $JS_DIR                       => q{/software/solexa/pkg/bwakit/bwakit-0.7.15/};
+Readonly::Scalar my $TARGET_REGIONS_DIR_NAME      => q{target};
+Readonly::Scalar my $REFERENCE_ABSENT             => q{REFERENCE_NOT_AVAILABLE};
+>>>>>>> remove hard-coding of path to javascript script location for bwakit - instead specify using environment variables or general_values config
 
 =head2 phix_reference
 
@@ -91,6 +94,19 @@ sub _build__num_cpus {
   my $self = shift;
   return $self->num_cpus2array(
     $self->general_values_conf()->{'seq_alignment_slots'} || $NUM_SLOTS);
+}
+
+has '_js_scripts_dir' => ( isa        => 'Str',
+                           is         => 'ro',
+                           required   => 0,
+                           lazy_build => 1,
+                         );
+sub _build__js_scripts_dir {
+  my $self = shift;
+  return $ENV{'NPG_PIPELINE_JS_SCRIPTS_DIR'}
+         || $self->general_values_conf()->{'js_scripts_directory'}
+         || $ENV{'NPG_PIPELINE_SCRIPTS_DIR'}
+         || $self->general_values_conf()->{'scripts_directory'};
 }
 
 has '_do_gbs_plex_analysis' => ( isa     => 'Bool',
